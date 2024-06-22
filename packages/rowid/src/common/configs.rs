@@ -1,0 +1,3 @@
+pub const CHAR_LIST: &str = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+pub const TIMESTAMP_LENGTH: usize = 10;
+pub const RANDOMNESS_LENGTH: usize = 22;

@@ -1,0 +1,9 @@
+[workspace]
+resolver = "2"
+members = [
+    "packages/__test__",
+    "packages/rowid",
+]
+
+[workspace.dependencies]
+rowid = { path = "packages/rowid" }
