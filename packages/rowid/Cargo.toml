@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["Alpheus Tang"]
 edition = "2021"
 description = """
-A time based unique ID solution
+A time-based unique ID solution
 """
 readme = "README.md"
 homepage = "https://github.com/alpheustangs/rowid.rs"
