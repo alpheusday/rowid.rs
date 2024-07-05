@@ -21,7 +21,7 @@ pub fn encode(opts: EncodeOptions) -> io::Result<String> {
     let char_list: Vec<char> = opts.char_list.chars().collect();
     let char_list_length: usize = char_list.len();
 
-    let mut index = TIMESTAMP_LENGTH;
+    let mut index: usize = TIMESTAMP_LENGTH;
     let mut encoded: [char; TIMESTAMP_LENGTH] = ['\0'; TIMESTAMP_LENGTH];
     let mut remaining: usize = system_time_to_timestamp(opts.system_time);
 
