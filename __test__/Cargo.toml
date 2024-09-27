@@ -1,6 +1,5 @@
 [package]
-name = "test"
-version = "0.1.0"
+name = "__test__"
 edition = "2021"
 publish = false
 

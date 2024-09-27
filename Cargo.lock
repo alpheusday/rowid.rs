@@ -3,6 +3,13 @@
 version = 3
 
 [[package]]
+name = "__test__"
+version = "0.0.0"
+dependencies = [
+ "rowid",
+]
+
+[[package]]
 name = "cfg-if"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -66,13 +73,6 @@ name = "rowid"
 version = "0.1.1"
 dependencies = [
  "rand",
-]
-
-[[package]]
-name = "test"
-version = "0.1.0"
-dependencies = [
- "rowid",
 ]
 
 [[package]]
