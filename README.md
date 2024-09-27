@@ -4,7 +4,7 @@ A time-based unique ID solution.
 
 ## Installation
 
-To install RowID, run the following command:
+To install this package, run the following command:
 
 ```bash
 cargo add rowid
@@ -12,7 +12,7 @@ cargo add rowid
 
 ## Quick Start
 
-You may create a RowID with the following code:
+You may create an ID with the following code:
 
 ```rust
 use rowid::rowid;
@@ -20,7 +20,7 @@ use rowid::rowid;
 let id: String = rowid();
 ```
 
-Or customize the RowID with the following code:
+Or start a customization with the following code:
 
 ```rust
 use rowid::{RowIDWithConfig, RowIDWithConfigResult};

@@ -4,7 +4,7 @@
 //!
 //! ## Quick Start
 //!
-//! You may create a RowID with the following code:
+//! You may create an ID with the following code:
 //!
 //! ```no_run
 //! use rowid::rowid;
@@ -12,7 +12,7 @@
 //! let id: String = rowid();
 //! ```
 //!
-//! Or customize the RowID with the following code:
+//! Or start a customization with the following code:
 //!
 //! ```no_run
 //! use rowid::{RowIDWithConfig, RowIDWithConfigResult};
