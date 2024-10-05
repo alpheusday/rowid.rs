@@ -12,7 +12,7 @@ cargo add rowid
 
 ## Quick Start
 
-You may create an ID with the following code:
+Create an ID with the following code:
 
 ```rust
 use rowid::rowid;

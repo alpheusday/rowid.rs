@@ -4,7 +4,7 @@
 //!
 //! ## Quick Start
 //!
-//! You may create an ID with the following code:
+//! Create an ID with the following code:
 //!
 //! ```no_run
 //! use rowid::rowid;

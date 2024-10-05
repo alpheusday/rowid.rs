@@ -4,7 +4,7 @@ A time-based unique ID solution.
 
 ## Quick Start
 
-You may create an ID with the following code:
+Create an ID with the following code:
 
 ```rust
 use rowid::rowid;
