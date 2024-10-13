@@ -1,20 +1,32 @@
-// encode
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RowIDError {
+    SystemTimeBeforeEpoch,
+    EncodedLength,
+    InvalidEncoded,
+    CharListLength,
+}
 
-/// `encode` fn -> `system_time` -> invalid error
-pub const ENCODE_ST_INVALID_ERR: &str =
-    "System time must not before the Unix epoch";
+impl RowIDError {
+    /// Get the error message as `&str`.
+    pub fn as_str(&self) -> &str {
+        match self {
+            | Self::SystemTimeBeforeEpoch => {
+                "System time must not before the Unix epoch"
+            },
+            | Self::EncodedLength => "Encoded is not long enough to be decoded",
+            | Self::InvalidEncoded => "Encoded is not valid",
+            | Self::CharListLength => {
+                "The length of char_list must be longer or equal to 28"
+            },
+        }
+    }
+}
 
-// decode
-
-/// `decode` fn -> `encoded` -> length error
-pub const DECODE_ECD_LENGTH_ERR: &str =
-    "Encoded is not long enough to be decoded";
-
-/// `decode` fn -> `encoded` -> invalid error
-pub const DECODE_ECD_INVALID_ERR: &str = "Encoded is not valid";
-
-// rowid with config
-
-/// `RowIDWithConfig` struct -> `done` fn -> `char_list` length error
-pub const RWC_DONE_CHAR_LIST_LENGTH_ERR: &str =
-    "The length of char_list must be longer or equal to 28";
+impl std::fmt::Display for RowIDError {
+    fn fmt(
+        &self,
+        f: &mut std::fmt::Formatter<'_>,
+    ) -> std::fmt::Result {
+        write!(f, "{}", self.as_str())
+    }
+}

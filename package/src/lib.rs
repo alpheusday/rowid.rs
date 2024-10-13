@@ -18,7 +18,7 @@
 //! use rowid::{RowIDWithConfig, RowIDWithConfigResult};
 //!
 //! let rwc: RowIDWithConfigResult = RowIDWithConfig::new()
-//!     .char_list("0123456789ABCDEFGHJKMNPQRSTVWXYZ".to_string())
+//!     .char_list("0123456789ABCDEFGHJKMNPQRSTVWXYZ")
 //!     .randomness_length(22)
 //!     .done()
 //!     .unwrap();
@@ -48,12 +48,4 @@ pub use crate::utils::system_time::{
     system_time_to_timestamp, timestamp_to_system_time,
 };
 
-// errors
-
-/// This module contains all the error messages.
-pub mod errors {
-    pub use crate::common::errors::{
-        DECODE_ECD_INVALID_ERR, DECODE_ECD_LENGTH_ERR, ENCODE_ST_INVALID_ERR,
-        RWC_DONE_CHAR_LIST_LENGTH_ERR,
-    };
-}
+pub use crate::common::errors::RowIDError;

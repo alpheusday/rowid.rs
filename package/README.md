@@ -18,7 +18,7 @@ Or start a customization with the following code:
 use rowid::{RowIDWithConfig, RowIDWithConfigResult};
 
 let rwc: RowIDWithConfigResult = RowIDWithConfig::new()
-    .char_list("0123456789ABCDEFGHJKMNPQRSTVWXYZ".to_string())
+    .char_list("0123456789ABCDEFGHJKMNPQRSTVWXYZ")
     .randomness_length(22)
     .done()
     .unwrap();

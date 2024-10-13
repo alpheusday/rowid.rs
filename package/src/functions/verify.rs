@@ -3,12 +3,13 @@ use std::time::SystemTime;
 
 use crate::functions::decode::{decode, DecodeOptions};
 
-pub struct VerifyOptions {
-    pub char_list: String,
-    pub encoded: String,
+pub struct VerifyOptions<'a> {
+    pub char_list: &'a str,
+    pub encoded: &'a str,
 }
 
 /// Result of the `verify` function.
+#[derive(Debug)]
 pub struct VerifyResult {
     /// Tells whether the verification is success or not.
     pub success: bool,

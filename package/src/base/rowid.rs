@@ -27,7 +27,7 @@ use crate::functions::verify::{
 /// ```
 pub fn rowid() -> String {
     _rowid(RowIDOptions {
-        char_list: CHAR_LIST.to_string(),
+        char_list: CHAR_LIST,
         randomness_length: RANDOMNESS_LENGTH,
     })
 }
@@ -44,7 +44,7 @@ pub fn rowid() -> String {
 /// let encoded: String = encode(SystemTime::now()).unwrap();
 /// ```
 pub fn encode(system_time: SystemTime) -> io::Result<String> {
-    _encode(EncodeOptions { char_list: CHAR_LIST.to_string(), system_time })
+    _encode(EncodeOptions { char_list: CHAR_LIST, system_time })
 }
 
 /// This function decodes the ID into a timestamp in milliseconds.
@@ -55,10 +55,10 @@ pub fn encode(system_time: SystemTime) -> io::Result<String> {
 /// use std::time::SystemTime;
 /// use rowid::decode;
 ///
-/// let decoded: SystemTime = decode("ABC123".to_string()).unwrap();
+/// let decoded: SystemTime = decode("ABC123").unwrap();
 /// ```
-pub fn decode(encoded: String) -> io::Result<SystemTime> {
-    _decode(DecodeOptions { char_list: CHAR_LIST.to_string(), encoded })
+pub fn decode(encoded: &str) -> io::Result<SystemTime> {
+    _decode(DecodeOptions { char_list: CHAR_LIST, encoded })
 }
 
 /// This function generates an ID based on the input.
@@ -77,7 +77,7 @@ pub fn generate(
     randomness_length: Option<usize>,
 ) -> GenerateResult {
     _generate(GenerateOptions {
-        char_list: CHAR_LIST.to_string(),
+        char_list: CHAR_LIST,
         system_time,
         randomness_length: match randomness_length {
             | Some(l) => l,
@@ -93,10 +93,10 @@ pub fn generate(
 /// ```no_run
 /// use rowid::{verify, VerifyResult};
 ///
-/// let result: VerifyResult = verify("ABC123".to_string());
+/// let result: VerifyResult = verify("ABC123");
 /// ```
-pub fn verify(encoded: String) -> VerifyResult {
-    _verify(VerifyOptions { char_list: CHAR_LIST.to_string(), encoded })
+pub fn verify(encoded: &str) -> VerifyResult {
+    _verify(VerifyOptions { char_list: CHAR_LIST, encoded })
 }
 
 /// This function generates randomness.
@@ -110,7 +110,7 @@ pub fn verify(encoded: String) -> VerifyResult {
 /// ```
 pub fn get_randomness(randomness_length: usize) -> String {
     _get_randomness(GetRandomnessOptions {
-        char_list: CHAR_LIST.to_string(),
+        char_list: CHAR_LIST,
         randomness_length,
     })
 }

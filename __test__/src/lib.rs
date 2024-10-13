@@ -8,10 +8,7 @@ mod tests {
         GenerateResult, RowIDWithConfig, RowIDWithConfigResult, VerifyResult,
     };
 
-    use rowid::errors::{
-        DECODE_ECD_INVALID_ERR, DECODE_ECD_LENGTH_ERR,
-        RWC_DONE_CHAR_LIST_LENGTH_ERR,
-    };
+    use rowid::RowIDError;
 
     // system_time_to_timestamp
 
@@ -92,7 +89,7 @@ mod tests {
     #[test]
     fn test_decode() {
         let current: SystemTime = SystemTime::now();
-        let decoded: SystemTime = decode(encode(current).unwrap()).unwrap();
+        let decoded: SystemTime = decode(&encode(current).unwrap()).unwrap();
         assert!(
             system_time_to_timestamp(decoded)
                 == system_time_to_timestamp(current)
@@ -101,24 +98,24 @@ mod tests {
 
     #[test]
     fn test_decode_length_error() {
-        let result: io::Error = match decode("ABC123".to_string()) {
+        let result: io::Error = match decode("ABC123") {
             | Ok(_) => return assert!(false),
             | Err(e) => e,
         };
 
         assert!(result.kind() == io::ErrorKind::InvalidInput);
-        assert!(result.to_string() == DECODE_ECD_LENGTH_ERR);
+        assert!(result.to_string() == RowIDError::EncodedLength.as_str());
     }
 
     #[test]
     fn test_decode_invalid_input_error() {
-        let result: io::Error = match decode("ab^!@#$agastgyaSER".to_string()) {
+        let result: io::Error = match decode("ab^!@#$agastgyaSER") {
             | Ok(_) => return assert!(false),
             | Err(e) => e,
         };
 
         assert!(result.kind() == io::ErrorKind::InvalidInput);
-        assert!(result.to_string() == DECODE_ECD_INVALID_ERR);
+        assert!(result.to_string() == RowIDError::InvalidEncoded.as_str());
     }
 
     // generate
@@ -130,7 +127,7 @@ mod tests {
         let id: String = generated.result.unwrap();
         assert!(generated.success == true);
         assert!(
-            system_time_to_timestamp(decode(id.clone()).unwrap())
+            system_time_to_timestamp(decode(&id).unwrap())
                 == system_time_to_timestamp(current)
         );
         assert!(id.len() == 16);
@@ -142,7 +139,7 @@ mod tests {
     fn test_verify() {
         let current: SystemTime = SystemTime::now();
         let id: String = generate(current, Some(6)).result.unwrap();
-        let verified: VerifyResult = verify(id);
+        let verified: VerifyResult = verify(&id);
         assert!(verified.success == true);
         assert!(match verified.result {
             | Some(r) =>
@@ -154,7 +151,7 @@ mod tests {
 
     #[test]
     fn test_verify_length_error() {
-        let verified: VerifyResult = verify("ABC123".to_string());
+        let verified: VerifyResult = verify("ABC123");
 
         assert!(verified.success == false);
 
@@ -164,12 +161,12 @@ mod tests {
         };
 
         assert!(error.kind() == io::ErrorKind::InvalidInput);
-        assert!(error.to_string() == DECODE_ECD_LENGTH_ERR);
+        assert!(error.to_string() == RowIDError::EncodedLength.as_str());
     }
 
     #[test]
     fn test_verify_invalid_input_error() {
-        let verified: VerifyResult = verify("ab^!@#$agastgyaSER".to_string());
+        let verified: VerifyResult = verify("ab^!@#$agastgyaSER");
 
         assert!(verified.success == false);
 
@@ -179,7 +176,7 @@ mod tests {
         };
 
         assert!(error.kind() == io::ErrorKind::InvalidInput);
-        assert!(error.to_string() == DECODE_ECD_INVALID_ERR);
+        assert!(error.to_string() == RowIDError::InvalidEncoded.as_str());
     }
 
     // rowid_with_config
@@ -187,13 +184,13 @@ mod tests {
     #[test]
     fn test_rowid_with_config_char_list_length_error() {
         let err: io::Error =
-            match RowIDWithConfig::new().char_list("ABC".to_string()).done() {
+            match RowIDWithConfig::new().char_list("ABC").done() {
                 | Ok(_) => return assert!(false),
                 | Err(e) => e,
             };
 
         assert!(err.kind() == io::ErrorKind::InvalidInput);
-        assert!(err.to_string() == RWC_DONE_CHAR_LIST_LENGTH_ERR);
+        assert!(err.to_string() == RowIDError::CharListLength.as_str());
     }
 
     #[test]
@@ -223,7 +220,7 @@ mod tests {
 
         let current: SystemTime = SystemTime::now();
         let decoded: SystemTime =
-            rwc.decode(rwc.encode(current).unwrap()).unwrap();
+            rwc.decode(&rwc.encode(current).unwrap()).unwrap();
 
         assert!(
             system_time_to_timestamp(decoded)
@@ -241,9 +238,9 @@ mod tests {
         let id: String = generated.result.unwrap();
 
         assert!(generated.success == true);
-        assert!(id.clone().len() == 16);
+        assert!(id.len() == 16);
         assert!(
-            system_time_to_timestamp(rwc.decode(id.clone()).unwrap())
+            system_time_to_timestamp(rwc.decode(&id).unwrap())
                 == system_time_to_timestamp(current)
         );
     }
@@ -255,7 +252,7 @@ mod tests {
 
         let current: SystemTime = SystemTime::now();
         let generated: GenerateResult = rwc.generate(current, None);
-        let verified: VerifyResult = rwc.verify(generated.result.unwrap());
+        let verified: VerifyResult = rwc.verify(&generated.result.unwrap());
 
         assert!(verified.success == true);
         assert!(match verified.result {

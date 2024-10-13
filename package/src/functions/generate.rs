@@ -4,13 +4,14 @@ use std::time::SystemTime;
 use crate::functions::encode::{encode, EncodeOptions};
 use crate::functions::get_randomness::{get_randomness, GetRandomnessOptions};
 
-pub struct GenerateOptions {
-    pub char_list: String,
+pub struct GenerateOptions<'a> {
+    pub char_list: &'a str,
     pub system_time: SystemTime,
     pub randomness_length: usize,
 }
 
 /// Result of the `generate` function.
+#[derive(Debug)]
 pub struct GenerateResult {
     /// Tells whether the generation is success or not.
     pub success: bool,
@@ -22,7 +23,7 @@ pub struct GenerateResult {
 
 pub fn generate(opts: GenerateOptions) -> GenerateResult {
     let encoded: String = match encode(EncodeOptions {
-        char_list: opts.char_list.clone(),
+        char_list: opts.char_list,
         system_time: opts.system_time,
     }) {
         | Ok(res) => res,
@@ -37,7 +38,7 @@ pub fn generate(opts: GenerateOptions) -> GenerateResult {
 
     let extra_randomness_length: String =
         get_randomness(GetRandomnessOptions {
-            char_list: opts.char_list.clone(),
+            char_list: opts.char_list,
             randomness_length: opts.randomness_length,
         });
 

@@ -3,19 +3,19 @@ use std::io;
 use std::time::SystemTime;
 
 use crate::common::configs::TIMESTAMP_LENGTH;
-use crate::common::errors::{DECODE_ECD_INVALID_ERR, DECODE_ECD_LENGTH_ERR};
+use crate::common::errors::RowIDError;
 use crate::utils::system_time::timestamp_to_system_time;
 
-pub struct DecodeOptions {
-    pub char_list: String,
-    pub encoded: String,
+pub struct DecodeOptions<'a> {
+    pub char_list: &'a str,
+    pub encoded: &'a str,
 }
 
 pub fn decode(opts: DecodeOptions) -> io::Result<SystemTime> {
     if opts.encoded.len() < TIMESTAMP_LENGTH {
         return Err(io::Error::new(
             io::ErrorKind::InvalidInput,
-            DECODE_ECD_LENGTH_ERR,
+            RowIDError::EncodedLength.as_str(),
         ));
     }
 
@@ -35,7 +35,7 @@ pub fn decode(opts: DecodeOptions) -> io::Result<SystemTime> {
     if !encoded_chars.iter().all(|c| char_index_map.contains_key(c)) {
         return Err(io::Error::new(
             io::ErrorKind::InvalidInput,
-            DECODE_ECD_INVALID_ERR,
+            RowIDError::InvalidEncoded.as_str(),
         ));
     }
 
@@ -47,7 +47,7 @@ pub fn decode(opts: DecodeOptions) -> io::Result<SystemTime> {
         } else {
             return Err(io::Error::new(
                 io::ErrorKind::InvalidInput,
-                DECODE_ECD_INVALID_ERR,
+                RowIDError::InvalidEncoded.as_str(),
             ));
         }
     }

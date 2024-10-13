@@ -2,11 +2,11 @@ use std::io;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::common::configs::TIMESTAMP_LENGTH;
-use crate::common::errors::ENCODE_ST_INVALID_ERR;
+use crate::common::errors::RowIDError;
 use crate::utils::system_time::system_time_to_timestamp;
 
-pub struct EncodeOptions {
-    pub char_list: String,
+pub struct EncodeOptions<'a> {
+    pub char_list: &'a str,
     pub system_time: SystemTime,
 }
 
@@ -14,7 +14,7 @@ pub fn encode(opts: EncodeOptions) -> io::Result<String> {
     if opts.system_time < UNIX_EPOCH {
         return Err(io::Error::new(
             io::ErrorKind::InvalidInput,
-            ENCODE_ST_INVALID_ERR,
+            RowIDError::InvalidEncoded.as_str(),
         ));
     }
 
