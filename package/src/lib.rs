@@ -7,7 +7,7 @@
 //! Create an ID with the following code:
 //!
 //! ```no_run
-//! use rowid::rowid;
+//! use rowid::base::rowid;
 //!
 //! let id: String = rowid();
 //! ```
@@ -15,7 +15,7 @@
 //! Or start a customization with the following code:
 //!
 //! ```no_run
-//! use rowid::{RowIDWithConfig, RowIDWithConfigResult};
+//! use rowid::with_config::{RowIDWithConfig, RowIDWithConfigResult};
 //!
 //! let rwc: RowIDWithConfigResult = RowIDWithConfig::new()
 //!     .char_list("0123456789ABCDEFGHJKMNPQRSTVWXYZ")
@@ -26,26 +26,30 @@
 //! let id: String = rwc.rowid();
 //! ```
 
-mod base;
-mod common;
-mod functions;
-mod utils;
+mod internal;
 
-// basics
+/// Base module that contains the basic functions and structs.
+pub mod base {
+    pub use crate::internal::functions::generate::GenerateResult;
+    pub use crate::internal::functions::verify::VerifyResult;
 
-pub use crate::functions::generate::GenerateResult;
-pub use crate::functions::verify::VerifyResult;
+    pub use crate::internal::base::{
+        decode, encode, generate, get_randomness, rowid, verify,
+    };
 
-pub use crate::base::rowid::{
-    decode, encode, generate, get_randomness, rowid, verify,
-};
+    pub use crate::internal::common::errors::RowIDError;
+}
 
-pub use crate::base::rowid_with_config::{
-    RowIDWithConfig, RowIDWithConfigResult, RowIDWithConfigState,
-};
+/// Config module, for customization.
+pub mod with_config {
+    pub use crate::internal::base::with_config::{
+        RowIDWithConfig, RowIDWithConfigResult, RowIDWithConfigState,
+    };
+}
 
-pub use crate::utils::system_time::{
-    system_time_to_timestamp, timestamp_to_system_time,
-};
-
-pub use crate::common::errors::RowIDError;
+/// Time module.
+pub mod time {
+    pub use crate::internal::utils::time::{
+        system_time_to_timestamp, timestamp_to_system_time,
+    };
+}

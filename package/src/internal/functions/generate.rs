@@ -1,8 +1,9 @@
-use std::io;
-use std::time::SystemTime;
+use std::{io, time::SystemTime};
 
-use crate::functions::encode::{encode, EncodeOptions};
-use crate::functions::get_randomness::{get_randomness, GetRandomnessOptions};
+use crate::internal::functions::{
+    encode::{encode, EncodeOptions},
+    get_randomness::{get_randomness, GetRandomnessOptions},
+};
 
 pub struct GenerateOptions<'a> {
     pub char_list: &'a str,

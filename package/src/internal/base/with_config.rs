@@ -1,19 +1,20 @@
-use std::io;
-use std::time::SystemTime;
+use std::{io, time::SystemTime};
 
-use crate::common::configs::{CHAR_LIST, RANDOMNESS_LENGTH};
-use crate::common::errors::RowIDError;
-use crate::functions::decode::{decode as _decode, DecodeOptions};
-use crate::functions::encode::{encode as _encode, EncodeOptions};
-use crate::functions::generate::{
-    generate as _generate, GenerateOptions, GenerateResult,
-};
-use crate::functions::get_randomness::{
-    get_randomness as _get_randomness, GetRandomnessOptions,
-};
-use crate::functions::rowid::{rowid as _rowid, RowIDOptions};
-use crate::functions::verify::{
-    verify as _verify, VerifyOptions, VerifyResult,
+use crate::internal::{
+    common::{
+        configs::{CHAR_LIST, RANDOMNESS_LENGTH},
+        errors::RowIDError,
+    },
+    functions::{
+        decode::{decode as _decode, DecodeOptions},
+        encode::{encode as _encode, EncodeOptions},
+        generate::{generate as _generate, GenerateOptions, GenerateResult},
+        get_randomness::{
+            get_randomness as _get_randomness, GetRandomnessOptions,
+        },
+        rowid::{rowid as _rowid, RowIDOptions},
+        verify::{verify as _verify, VerifyOptions, VerifyResult},
+    },
 };
 
 /// This struct contains the state of the `RowIDWithConfig` struct.
@@ -31,7 +32,7 @@ pub struct RowIDWithConfigState<'a> {
 /// ## Example
 ///
 /// ```no_run
-/// use rowid::{RowIDWithConfig, RowIDWithConfigResult};
+/// use rowid::with_config::{RowIDWithConfig, RowIDWithConfigResult};
 ///
 /// let rwc: RowIDWithConfigResult =
 ///     RowIDWithConfig::new().done().unwrap();
@@ -49,7 +50,7 @@ impl<'a> RowIDWithConfigResult<'a> {
     /// ## Example
     ///
     /// ```no_run
-    /// use rowid::{RowIDWithConfig, RowIDWithConfigResult};
+    /// use rowid::with_config::{RowIDWithConfig, RowIDWithConfigResult};
     ///
     /// let rwc: RowIDWithConfigResult =
     ///     RowIDWithConfig::new().done().unwrap();
@@ -69,7 +70,7 @@ impl<'a> RowIDWithConfigResult<'a> {
     ///
     /// ```no_run
     /// use std::time::SystemTime;
-    /// use rowid::{RowIDWithConfig, RowIDWithConfigResult};
+    /// use rowid::with_config::{RowIDWithConfig, RowIDWithConfigResult};
     ///
     /// let rwc: RowIDWithConfigResult =
     ///     RowIDWithConfig::new().done().unwrap();
@@ -88,7 +89,7 @@ impl<'a> RowIDWithConfigResult<'a> {
     ///
     /// ```no_run
     /// use std::time::SystemTime;
-    /// use rowid::{RowIDWithConfig, RowIDWithConfigResult};
+    /// use rowid::with_config::{RowIDWithConfig, RowIDWithConfigResult};
     ///
     /// let rwc: RowIDWithConfigResult =
     ///     RowIDWithConfig::new().done().unwrap();
@@ -107,7 +108,10 @@ impl<'a> RowIDWithConfigResult<'a> {
     ///
     /// ```no_run
     /// use std::time::SystemTime;
-    /// use rowid::{RowIDWithConfig, RowIDWithConfigResult, GenerateResult};
+    /// use rowid::{
+    ///     base::GenerateResult,
+    ///     with_config::{RowIDWithConfig, RowIDWithConfigResult}
+    /// };
     ///
     /// let rwc: RowIDWithConfigResult =
     ///     RowIDWithConfig::new().done().unwrap();
@@ -134,7 +138,10 @@ impl<'a> RowIDWithConfigResult<'a> {
     /// ## Example
     ///
     /// ```no_run
-    /// use rowid::{RowIDWithConfig, RowIDWithConfigResult, VerifyResult};
+    /// use rowid::{
+    ///     base::VerifyResult,
+    ///     with_config::{RowIDWithConfig, RowIDWithConfigResult}
+    /// };
     ///
     /// let rwc: RowIDWithConfigResult =
     ///     RowIDWithConfig::new().done().unwrap();
@@ -152,7 +159,7 @@ impl<'a> RowIDWithConfigResult<'a> {
     /// ## Example
     ///
     /// ```no_run
-    /// use rowid::{RowIDWithConfig, RowIDWithConfigResult};
+    /// use rowid::with_config::{RowIDWithConfig, RowIDWithConfigResult};
     ///
     /// let rwc: RowIDWithConfigResult =
     ///     RowIDWithConfig::new().done().unwrap();
@@ -177,7 +184,7 @@ impl<'a> RowIDWithConfigResult<'a> {
 /// ## Example
 ///
 /// ```no_run
-/// use rowid::{RowIDWithConfig, RowIDWithConfigResult};
+/// use rowid::with_config::{RowIDWithConfig, RowIDWithConfigResult};
 ///
 /// let rwc: RowIDWithConfigResult =
 ///     RowIDWithConfig::new().done().unwrap();
@@ -193,7 +200,7 @@ impl<'a> RowIDWithConfig<'a> {
     /// ## Example
     ///
     /// ```no_run
-    /// use rowid::{RowIDWithConfig, RowIDWithConfigResult};
+    /// use rowid::with_config::{RowIDWithConfig, RowIDWithConfigResult};
     ///
     /// let rwc: RowIDWithConfigResult =
     ///     RowIDWithConfig::new().done().unwrap();
@@ -215,7 +222,7 @@ impl<'a> RowIDWithConfig<'a> {
     /// ## Example
     ///
     /// ```no_run
-    /// use rowid::{RowIDWithConfig, RowIDWithConfigResult};
+    /// use rowid::with_config::{RowIDWithConfig, RowIDWithConfigResult};
     ///
     /// let rwc: RowIDWithConfigResult = RowIDWithConfig::new()
     ///     .char_list("0123456789ABCDEFGHJKMNPQRSTVWXYZ")
@@ -241,7 +248,7 @@ impl<'a> RowIDWithConfig<'a> {
     /// ## Example
     ///
     /// ```no_run
-    /// use rowid::{RowIDWithConfig, RowIDWithConfigResult};
+    /// use rowid::with_config::{RowIDWithConfig, RowIDWithConfigResult};
     ///
     /// let rwc: RowIDWithConfigResult = RowIDWithConfig::new()
     ///     .randomness_length(22)
@@ -264,7 +271,7 @@ impl<'a> RowIDWithConfig<'a> {
     /// ## Example
     ///
     /// ```no_run
-    /// use rowid::{RowIDWithConfig, RowIDWithConfigResult};
+    /// use rowid::with_config::{RowIDWithConfig, RowIDWithConfigResult};
     ///
     /// let rwc: RowIDWithConfigResult =
     ///     RowIDWithConfig::new().done().unwrap();

@@ -1,3 +1,11 @@
+## 0.3.0 (2024-10-14)
+
+### Breaking Changes
+
+- Add `base` module, and move related functions into it
+- Add `with_config` module, and move related functions into it
+- Add `time` module, and move related functions into it
+
 ## 0.2.0 (2024-10-13)
 
 ### Breaking Changes

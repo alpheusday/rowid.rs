@@ -1,18 +1,19 @@
-use std::io;
-use std::time::SystemTime;
+pub mod with_config;
 
-use crate::common::configs::{CHAR_LIST, RANDOMNESS_LENGTH};
-use crate::functions::decode::{decode as _decode, DecodeOptions};
-use crate::functions::encode::{encode as _encode, EncodeOptions};
-use crate::functions::generate::{
-    generate as _generate, GenerateOptions, GenerateResult,
-};
-use crate::functions::get_randomness::{
-    get_randomness as _get_randomness, GetRandomnessOptions,
-};
-use crate::functions::rowid::{rowid as _rowid, RowIDOptions};
-use crate::functions::verify::{
-    verify as _verify, VerifyOptions, VerifyResult,
+use std::{io, time::SystemTime};
+
+use crate::internal::{
+    common::configs::{CHAR_LIST, RANDOMNESS_LENGTH},
+    functions::{
+        decode::{decode as _decode, DecodeOptions},
+        encode::{encode as _encode, EncodeOptions},
+        generate::{generate as _generate, GenerateOptions, GenerateResult},
+        get_randomness::{
+            get_randomness as _get_randomness, GetRandomnessOptions,
+        },
+        rowid::{rowid as _rowid, RowIDOptions},
+        verify::{verify as _verify, VerifyOptions, VerifyResult},
+    },
 };
 
 /// This function generates a 32-character unique ID
@@ -21,7 +22,7 @@ use crate::functions::verify::{
 /// ## Example
 ///
 /// ```no_run
-/// use rowid::rowid;
+/// use rowid::base::rowid;
 ///
 /// let id: String = rowid();
 /// ```
@@ -39,7 +40,7 @@ pub fn rowid() -> String {
 ///
 /// ```no_run
 /// use std::time::SystemTime;
-/// use rowid::encode;
+/// use rowid::base::encode;
 ///
 /// let encoded: String = encode(SystemTime::now()).unwrap();
 /// ```
@@ -53,7 +54,7 @@ pub fn encode(system_time: SystemTime) -> io::Result<String> {
 ///
 /// ```no_run
 /// use std::time::SystemTime;
-/// use rowid::decode;
+/// use rowid::base::decode;
 ///
 /// let decoded: SystemTime = decode("ABC123").unwrap();
 /// ```
@@ -67,7 +68,7 @@ pub fn decode(encoded: &str) -> io::Result<SystemTime> {
 ///
 /// ```no_run
 /// use std::time::SystemTime;
-/// use rowid::{generate, GenerateResult};
+/// use rowid::base::{generate, GenerateResult};
 ///
 /// let now: SystemTime = SystemTime::now();
 /// let result: GenerateResult = generate(now, Some(22));
@@ -91,7 +92,7 @@ pub fn generate(
 /// ## Example
 ///
 /// ```no_run
-/// use rowid::{verify, VerifyResult};
+/// use rowid::base::{verify, VerifyResult};
 ///
 /// let result: VerifyResult = verify("ABC123");
 /// ```
@@ -104,7 +105,7 @@ pub fn verify(encoded: &str) -> VerifyResult {
 /// ## Example
 ///
 /// ```no_run
-/// use rowid::get_randomness;
+/// use rowid::base::get_randomness;
 ///
 /// let randomness: String = get_randomness(10);
 /// ```

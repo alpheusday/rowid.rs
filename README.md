@@ -15,7 +15,7 @@ cargo add rowid
 Create an ID with the following code:
 
 ```rust
-use rowid::rowid;
+use rowid::base::rowid;
 
 let id: String = rowid();
 ```
@@ -23,7 +23,7 @@ let id: String = rowid();
 Or start a customization with the following code:
 
 ```rust
-use rowid::{RowIDWithConfig, RowIDWithConfigResult};
+use rowid::with_config::{RowIDWithConfig, RowIDWithConfigResult};
 
 let rwc: RowIDWithConfigResult = RowIDWithConfig::new()
     .char_list("0123456789ABCDEFGHJKMNPQRSTVWXYZ")

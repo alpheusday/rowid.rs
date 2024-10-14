@@ -6,7 +6,7 @@ use std::time::{Duration, SystemTime, UNIX_EPOCH};
 ///
 /// ```no_run
 /// use std::time::SystemTime;
-/// use rowid::system_time_to_timestamp;
+/// use rowid::time::system_time_to_timestamp;
 ///
 /// let now: SystemTime = SystemTime::now();
 /// let timestamp: usize = system_time_to_timestamp(now);
@@ -24,7 +24,7 @@ pub fn system_time_to_timestamp(system_time: SystemTime) -> usize {
 ///
 /// ```no_run
 /// use std::time::SystemTime;
-/// use rowid::timestamp_to_system_time;
+/// use rowid::time::timestamp_to_system_time;
 ///
 /// let timestamp: usize = 0;
 /// let system_time: SystemTime = timestamp_to_system_time(timestamp);

@@ -1,7 +1,6 @@
-use std::io;
-use std::time::SystemTime;
+use std::{io, time::SystemTime};
 
-use crate::functions::decode::{decode, DecodeOptions};
+use crate::internal::functions::decode::{decode, DecodeOptions};
 
 pub struct VerifyOptions<'a> {
     pub char_list: &'a str,

@@ -1,10 +1,9 @@
-use std::collections::HashMap;
-use std::io;
-use std::time::SystemTime;
+use std::{collections::HashMap, io, time::SystemTime};
 
-use crate::common::configs::TIMESTAMP_LENGTH;
-use crate::common::errors::RowIDError;
-use crate::utils::system_time::timestamp_to_system_time;
+use crate::internal::{
+    common::{configs::TIMESTAMP_LENGTH, errors::RowIDError},
+    utils::time::timestamp_to_system_time,
+};
 
 pub struct DecodeOptions<'a> {
     pub char_list: &'a str,
