@@ -26,30 +26,14 @@
 //! let id: String = rwc.rowid();
 //! ```
 
-mod internal;
+mod common;
+mod function;
 
 /// Base module that contains the basic functions and structs.
-pub mod base {
-    pub use crate::internal::functions::generate::GenerateResult;
-    pub use crate::internal::functions::verify::VerifyResult;
-
-    pub use crate::internal::base::{
-        decode, encode, generate, get_randomness, rowid, verify,
-    };
-
-    pub use crate::internal::common::errors::RowIDError;
-}
+pub mod base;
 
 /// Config module, for customization.
-pub mod with_config {
-    pub use crate::internal::base::with_config::{
-        RowIDWithConfig, RowIDWithConfigResult, RowIDWithConfigState,
-    };
-}
+pub mod with_config;
 
 /// Time module.
-pub mod time {
-    pub use crate::internal::utils::time::{
-        system_time_to_timestamp, timestamp_to_system_time,
-    };
-}
+pub mod time;

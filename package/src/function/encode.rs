@@ -3,9 +3,9 @@ use std::{
     time::{SystemTime, UNIX_EPOCH},
 };
 
-use crate::internal::{
+use crate::{
     common::{configs::TIMESTAMP_LENGTH, errors::RowIDError},
-    utils::time::system_time_to_timestamp,
+    time::system_time_to_timestamp,
 };
 
 pub struct EncodeOptions<'a> {
@@ -13,7 +13,7 @@ pub struct EncodeOptions<'a> {
     pub system_time: SystemTime,
 }
 
-fn _encode(opts: EncodeOptions) -> String {
+fn _encode_(opts: EncodeOptions) -> String {
     let char_list: Vec<char> = opts.char_list.chars().collect();
     let char_list_length: usize = char_list.len();
 
@@ -31,10 +31,10 @@ fn _encode(opts: EncodeOptions) -> String {
 }
 
 pub fn encode_unsafe(opts: EncodeOptions) -> String {
-    _encode(opts)
+    _encode_(opts)
 }
 
-pub fn encode(opts: EncodeOptions) -> io::Result<String> {
+pub fn _encode(opts: EncodeOptions) -> io::Result<String> {
     if opts.system_time < UNIX_EPOCH {
         return Err(io::Error::new(
             io::ErrorKind::InvalidInput,
@@ -42,5 +42,5 @@ pub fn encode(opts: EncodeOptions) -> io::Result<String> {
         ));
     }
 
-    Ok(_encode(opts))
+    Ok(_encode_(opts))
 }

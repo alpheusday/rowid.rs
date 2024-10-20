@@ -1,3 +1,4 @@
+/// Errors that can may occur during the process.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum RowIDError {
     SystemTimeBeforeEpoch,

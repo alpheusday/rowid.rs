@@ -1,8 +1,8 @@
 use std::{io, time::SystemTime};
 
-use crate::internal::functions::{
-    encode::{encode, EncodeOptions},
-    get_randomness::{get_randomness, GetRandomnessOptions},
+use crate::function::{
+    encode::{EncodeOptions, _encode},
+    get_randomness::{GetRandomnessOptions, _get_randomness},
 };
 
 pub struct GenerateOptions<'a> {
@@ -22,8 +22,8 @@ pub struct GenerateResult {
     pub error: Option<io::Error>,
 }
 
-pub fn generate(opts: GenerateOptions) -> GenerateResult {
-    let encoded: String = match encode(EncodeOptions {
+pub fn _generate(opts: GenerateOptions) -> GenerateResult {
+    let encoded: String = match _encode(EncodeOptions {
         char_list: opts.char_list,
         system_time: opts.system_time,
     }) {
@@ -38,7 +38,7 @@ pub fn generate(opts: GenerateOptions) -> GenerateResult {
     };
 
     let extra_randomness_length: String =
-        get_randomness(GetRandomnessOptions {
+        _get_randomness(GetRandomnessOptions {
             char_list: opts.char_list,
             randomness_length: opts.randomness_length,
         });

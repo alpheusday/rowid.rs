@@ -1,8 +1,8 @@
 use std::time::SystemTime;
 
-use crate::internal::functions::{
+use crate::function::{
     encode::{encode_unsafe, EncodeOptions},
-    get_randomness::{get_randomness, GetRandomnessOptions},
+    get_randomness::{GetRandomnessOptions, _get_randomness},
 };
 
 pub struct RowIDOptions<'a> {
@@ -10,11 +10,11 @@ pub struct RowIDOptions<'a> {
     pub randomness_length: usize,
 }
 
-pub fn rowid(opts: RowIDOptions) -> String {
+pub fn _rowid(opts: RowIDOptions) -> String {
     encode_unsafe(EncodeOptions {
         char_list: opts.char_list,
         system_time: SystemTime::now(),
-    }) + &get_randomness(GetRandomnessOptions {
+    }) + &_get_randomness(GetRandomnessOptions {
         char_list: opts.char_list,
         randomness_length: opts.randomness_length,
     })

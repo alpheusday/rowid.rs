@@ -1,8 +1,8 @@
 use std::{collections::HashMap, io, time::SystemTime};
 
-use crate::internal::{
+use crate::{
     common::{configs::TIMESTAMP_LENGTH, errors::RowIDError},
-    utils::time::timestamp_to_system_time,
+    time::timestamp_to_system_time,
 };
 
 pub struct DecodeOptions<'a> {
@@ -10,7 +10,7 @@ pub struct DecodeOptions<'a> {
     pub encoded: &'a str,
 }
 
-pub fn decode(opts: DecodeOptions) -> io::Result<SystemTime> {
+pub fn _decode(opts: DecodeOptions) -> io::Result<SystemTime> {
     if opts.encoded.len() < TIMESTAMP_LENGTH {
         return Err(io::Error::new(
             io::ErrorKind::InvalidInput,

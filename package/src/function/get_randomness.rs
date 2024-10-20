@@ -5,7 +5,7 @@ pub struct GetRandomnessOptions<'a> {
     pub randomness_length: usize,
 }
 
-pub fn get_randomness(opts: GetRandomnessOptions) -> String {
+pub fn _get_randomness(opts: GetRandomnessOptions) -> String {
     let char_list: Vec<char> = opts.char_list.chars().collect();
     let length: usize = opts.randomness_length;
     let mut randomness: Vec<char> = Vec::with_capacity(length);

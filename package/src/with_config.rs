@@ -1,19 +1,17 @@
 use std::{io, time::SystemTime};
 
-use crate::internal::{
+use crate::{
     common::{
         configs::{CHAR_LIST, RANDOMNESS_LENGTH},
         errors::RowIDError,
     },
-    functions::{
-        decode::{decode as _decode, DecodeOptions},
-        encode::{encode as _encode, EncodeOptions},
-        generate::{generate as _generate, GenerateOptions, GenerateResult},
-        get_randomness::{
-            get_randomness as _get_randomness, GetRandomnessOptions,
-        },
-        rowid::{rowid as _rowid, RowIDOptions},
-        verify::{verify as _verify, VerifyOptions, VerifyResult},
+    function::{
+        decode::{DecodeOptions, _decode},
+        encode::{EncodeOptions, _encode},
+        generate::{GenerateOptions, GenerateResult, _generate},
+        get_randomness::{GetRandomnessOptions, _get_randomness},
+        rowid::{RowIDOptions, _rowid},
+        verify::{VerifyOptions, VerifyResult, _verify},
     },
 };
 
