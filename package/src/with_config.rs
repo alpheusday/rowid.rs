@@ -16,10 +16,10 @@ use crate::{
 };
 
 /// This struct contains the state of the `RowIDWithConfig` struct.
-#[derive(Debug, Clone, Copy)]
-pub struct RowIDWithConfigState<'a> {
+#[derive(Debug, Clone)]
+pub struct RowIDWithConfigState {
     /// The list of characters used in the current function.
-    pub char_list: &'a str,
+    pub char_list: String,
     /// The length of randomness used in the current function.
     pub randomness_length: usize,
 }
@@ -35,13 +35,13 @@ pub struct RowIDWithConfigState<'a> {
 /// let rwc: RowIDWithConfigResult =
 ///     RowIDWithConfig::new().done().unwrap();
 /// ```
-#[derive(Debug, Clone, Copy)]
-pub struct RowIDWithConfigResult<'a> {
+#[derive(Debug, Clone)]
+pub struct RowIDWithConfigResult {
     /// Represents function's customization configurations.
-    pub state: RowIDWithConfigState<'a>,
+    pub state: RowIDWithConfigState,
 }
 
-impl<'a> RowIDWithConfigResult<'a> {
+impl RowIDWithConfigResult {
     /// This function generates a unique ID
     /// that is almost impossible to duplicate.
     ///
@@ -56,7 +56,7 @@ impl<'a> RowIDWithConfigResult<'a> {
     /// ```
     pub fn rowid(&self) -> String {
         _rowid(RowIDOptions {
-            char_list: self.state.char_list,
+            char_list: &self.state.char_list,
             randomness_length: self.state.randomness_length,
         })
     }
@@ -74,11 +74,14 @@ impl<'a> RowIDWithConfigResult<'a> {
     ///     RowIDWithConfig::new().done().unwrap();
     /// let encoded: String = rwc.encode(SystemTime::now()).unwrap();
     /// ```
-    pub fn encode(
+    pub fn encode<T: Into<SystemTime>>(
         &self,
-        system_time: SystemTime,
+        system_time: T,
     ) -> io::Result<String> {
-        _encode(EncodeOptions { char_list: self.state.char_list, system_time })
+        _encode(EncodeOptions {
+            char_list: &self.state.char_list,
+            system_time: system_time.into(),
+        })
     }
 
     /// This function decodes the ID into a timestamp in milliseconds.
@@ -93,11 +96,14 @@ impl<'a> RowIDWithConfigResult<'a> {
     ///     RowIDWithConfig::new().done().unwrap();
     /// let decoded: SystemTime = rwc.decode("ABC123").unwrap();
     /// ```
-    pub fn decode(
+    pub fn decode<S: AsRef<str>>(
         &self,
-        encoded: &str,
+        encoded: S,
     ) -> io::Result<SystemTime> {
-        _decode(DecodeOptions { char_list: self.state.char_list, encoded })
+        _decode(DecodeOptions {
+            char_list: &self.state.char_list,
+            encoded: encoded.as_ref(),
+        })
     }
 
     /// This function generates an ID based on the input.
@@ -116,14 +122,14 @@ impl<'a> RowIDWithConfigResult<'a> {
     /// let now: SystemTime = SystemTime::now();
     /// let result: GenerateResult = rwc.generate(now, Some(22));
     /// ```
-    pub fn generate(
+    pub fn generate<T: Into<SystemTime>>(
         &self,
-        system_time: SystemTime,
+        system_time: T,
         randomness_length: Option<usize>,
     ) -> GenerateResult {
         _generate(GenerateOptions {
-            char_list: self.state.char_list,
-            system_time,
+            char_list: &self.state.char_list,
+            system_time: system_time.into(),
             randomness_length: match randomness_length {
                 | Some(l) => l,
                 | None => self.state.randomness_length,
@@ -145,11 +151,14 @@ impl<'a> RowIDWithConfigResult<'a> {
     ///     RowIDWithConfig::new().done().unwrap();
     /// let result: VerifyResult = rwc.verify("ABC123");
     /// ```
-    pub fn verify(
+    pub fn verify<S: AsRef<str>>(
         &self,
-        encoded: &str,
+        encoded: S,
     ) -> VerifyResult {
-        _verify(VerifyOptions { char_list: self.state.char_list, encoded })
+        _verify(VerifyOptions {
+            char_list: &self.state.char_list,
+            encoded: encoded.as_ref(),
+        })
     }
 
     /// This function generates randomness.
@@ -168,7 +177,7 @@ impl<'a> RowIDWithConfigResult<'a> {
         randomness_length: usize,
     ) -> String {
         _get_randomness(GetRandomnessOptions {
-            char_list: self.state.char_list,
+            char_list: &self.state.char_list,
             randomness_length,
         })
     }
@@ -187,12 +196,12 @@ impl<'a> RowIDWithConfigResult<'a> {
 /// let rwc: RowIDWithConfigResult =
 ///     RowIDWithConfig::new().done().unwrap();
 /// ```
-#[derive(Debug, Clone, Copy)]
-pub struct RowIDWithConfig<'a> {
-    state: RowIDWithConfigState<'a>,
+#[derive(Debug, Clone)]
+pub struct RowIDWithConfig {
+    state: RowIDWithConfigState,
 }
 
-impl<'a> RowIDWithConfig<'a> {
+impl RowIDWithConfig {
     /// Creates a new `RowIDWithConfig` with default values.
     ///
     /// ## Example
@@ -206,7 +215,7 @@ impl<'a> RowIDWithConfig<'a> {
     pub fn new() -> Self {
         Self {
             state: RowIDWithConfigState {
-                char_list: CHAR_LIST,
+                char_list: CHAR_LIST.to_string(),
                 randomness_length: RANDOMNESS_LENGTH,
             },
         }
@@ -229,11 +238,11 @@ impl<'a> RowIDWithConfig<'a> {
     ///
     /// let id: String = rwc.rowid();
     /// ```
-    pub fn char_list(
+    pub fn char_list<S: Into<String>>(
         mut self,
-        list: &'a str,
+        list: S,
     ) -> Self {
-        self.state.char_list = list;
+        self.state.char_list = list.into();
         self
     }
 
@@ -275,7 +284,7 @@ impl<'a> RowIDWithConfig<'a> {
     ///     RowIDWithConfig::new().done().unwrap();
     /// let id: String = rwc.rowid();
     /// ```
-    pub fn done(self) -> io::Result<RowIDWithConfigResult<'a>> {
+    pub fn done(self) -> io::Result<RowIDWithConfigResult> {
         if self.state.char_list.len() < 28 {
             return Err(io::Error::new(
                 io::ErrorKind::InvalidInput,
@@ -292,7 +301,7 @@ impl<'a> RowIDWithConfig<'a> {
     }
 }
 
-impl<'a> Default for RowIDWithConfig<'a> {
+impl Default for RowIDWithConfig {
     fn default() -> Self {
         Self::new()
     }

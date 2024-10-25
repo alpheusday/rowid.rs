@@ -45,8 +45,11 @@ pub fn rowid() -> String {
 ///
 /// let encoded: String = encode(SystemTime::now()).unwrap();
 /// ```
-pub fn encode(system_time: SystemTime) -> io::Result<String> {
-    _encode(EncodeOptions { char_list: CHAR_LIST, system_time })
+pub fn encode<T: Into<SystemTime>>(system_time: T) -> io::Result<String> {
+    _encode(EncodeOptions {
+        char_list: CHAR_LIST,
+        system_time: system_time.into(),
+    })
 }
 
 /// This function decodes the ID into a timestamp in milliseconds.
@@ -59,8 +62,8 @@ pub fn encode(system_time: SystemTime) -> io::Result<String> {
 ///
 /// let decoded: SystemTime = decode("ABC123").unwrap();
 /// ```
-pub fn decode(encoded: &str) -> io::Result<SystemTime> {
-    _decode(DecodeOptions { char_list: CHAR_LIST, encoded })
+pub fn decode<S: AsRef<str>>(encoded: S) -> io::Result<SystemTime> {
+    _decode(DecodeOptions { char_list: CHAR_LIST, encoded: encoded.as_ref() })
 }
 
 /// This function generates an ID based on the input.
@@ -74,13 +77,13 @@ pub fn decode(encoded: &str) -> io::Result<SystemTime> {
 /// let now: SystemTime = SystemTime::now();
 /// let result: GenerateResult = generate(now, Some(22));
 /// ```
-pub fn generate(
-    system_time: SystemTime,
+pub fn generate<T: Into<SystemTime>>(
+    system_time: T,
     randomness_length: Option<usize>,
 ) -> GenerateResult {
     _generate(GenerateOptions {
         char_list: CHAR_LIST,
-        system_time,
+        system_time: system_time.into(),
         randomness_length: match randomness_length {
             | Some(l) => l,
             | None => RANDOMNESS_LENGTH,
@@ -97,8 +100,8 @@ pub fn generate(
 ///
 /// let result: VerifyResult = verify("ABC123");
 /// ```
-pub fn verify(encoded: &str) -> VerifyResult {
-    _verify(VerifyOptions { char_list: CHAR_LIST, encoded })
+pub fn verify<S: AsRef<str>>(encoded: S) -> VerifyResult {
+    _verify(VerifyOptions { char_list: CHAR_LIST, encoded: encoded.as_ref() })
 }
 
 /// This function generates randomness.

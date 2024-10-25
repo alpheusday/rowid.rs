@@ -11,8 +11,9 @@ use std::time::{Duration, SystemTime, UNIX_EPOCH};
 /// let now: SystemTime = SystemTime::now();
 /// let timestamp: usize = system_time_to_timestamp(now);
 /// ```
-pub fn system_time_to_timestamp(system_time: SystemTime) -> usize {
+pub fn system_time_to_timestamp<T: Into<SystemTime>>(system_time: T) -> usize {
     system_time
+        .into()
         .duration_since(UNIX_EPOCH)
         .map(|d| d.as_millis() as usize)
         .unwrap_or(0)

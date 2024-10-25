@@ -2,9 +2,12 @@ use std::{io, time::SystemTime};
 
 use crate::function::decode::{DecodeOptions, _decode};
 
-pub struct VerifyOptions<'a> {
-    pub char_list: &'a str,
-    pub encoded: &'a str,
+pub struct VerifyOptions<CharList: AsRef<str>, Encoded: AsRef<str>>
+where
+    CharList: AsRef<str>,
+{
+    pub char_list: CharList,
+    pub encoded: Encoded,
 }
 
 /// Result of the `verify` function.
@@ -20,7 +23,9 @@ pub struct VerifyResult {
     pub error: Option<io::Error>,
 }
 
-pub fn _verify(opts: VerifyOptions) -> VerifyResult {
+pub fn _verify<CharList: AsRef<str>, Encoded: AsRef<str>>(
+    opts: VerifyOptions<CharList, Encoded>
+) -> VerifyResult {
     let result: SystemTime = match _decode(DecodeOptions {
         char_list: opts.char_list,
         encoded: opts.encoded,

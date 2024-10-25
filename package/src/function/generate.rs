@@ -5,8 +5,8 @@ use crate::function::{
     get_randomness::{GetRandomnessOptions, _get_randomness},
 };
 
-pub struct GenerateOptions<'a> {
-    pub char_list: &'a str,
+pub struct GenerateOptions<CharList: AsRef<str>> {
+    pub char_list: CharList,
     pub system_time: SystemTime,
     pub randomness_length: usize,
 }
@@ -22,9 +22,13 @@ pub struct GenerateResult {
     pub error: Option<io::Error>,
 }
 
-pub fn _generate(opts: GenerateOptions) -> GenerateResult {
+pub fn _generate<CharList: AsRef<str>>(
+    opts: GenerateOptions<CharList>
+) -> GenerateResult {
+    let char_list: &str = opts.char_list.as_ref();
+
     let encoded: String = match _encode(EncodeOptions {
-        char_list: opts.char_list,
+        char_list,
         system_time: opts.system_time,
     }) {
         | Ok(res) => res,
@@ -39,7 +43,7 @@ pub fn _generate(opts: GenerateOptions) -> GenerateResult {
 
     let extra_randomness_length: String =
         _get_randomness(GetRandomnessOptions {
-            char_list: opts.char_list,
+            char_list,
             randomness_length: opts.randomness_length,
         });
 
