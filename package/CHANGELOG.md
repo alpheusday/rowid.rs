@@ -1,3 +1,14 @@
+## 0.4.0 (2024-10-27)
+
+### What's Changed
+
+- `encode` function accept more types of input now
+- `decode` function accept more types of input now
+- `generate` function accept more types of input now
+- `verify` function accept more types of input now
+- `system_time_to_timestamp` function accept more types of input now
+- `char_list` in `RowIDWithConfig` accept more types of input now
+
 ## 0.3.0 (2024-10-14)
 
 ### Breaking Changes
