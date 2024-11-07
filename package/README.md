@@ -28,4 +28,4 @@ let id: String = rwc.rowid();
 
 ## License
 
-This project is MIT licensed, you can find the license file [here](https://github.com/alpheustangs/rowid.rs/blob/main/LICENSE).
+This project is licensed under the terms of the MIT license.
