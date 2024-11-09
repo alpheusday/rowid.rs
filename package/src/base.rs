@@ -2,7 +2,7 @@ use std::{io, time::SystemTime};
 
 use crate::{
     common::configs::{CHAR_LIST, RANDOMNESS_LENGTH},
-    function::{
+    functions::{
         decode::{DecodeOptions, _decode},
         encode::{EncodeOptions, _encode},
         generate::{GenerateOptions, _generate},
@@ -14,7 +14,7 @@ use crate::{
 
 pub use crate::{
     common::errors::RowIDError,
-    function::{generate::GenerateResult, verify::VerifyResult},
+    functions::{generate::GenerateResult, verify::VerifyResult},
 };
 
 /// This function generates a 32-character unique ID

@@ -5,7 +5,7 @@ use crate::{
         configs::{CHAR_LIST, RANDOMNESS_LENGTH},
         errors::RowIDError,
     },
-    function::{
+    functions::{
         decode::{DecodeOptions, _decode},
         encode::{EncodeOptions, _encode},
         generate::{GenerateOptions, GenerateResult, _generate},

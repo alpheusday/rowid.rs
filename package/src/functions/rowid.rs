@@ -1,6 +1,6 @@
 use std::time::SystemTime;
 
-use crate::function::{
+use crate::functions::{
     encode::{encode_unsafe, EncodeOptions},
     get_randomness::{GetRandomnessOptions, _get_randomness},
 };

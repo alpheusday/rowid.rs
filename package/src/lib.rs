@@ -27,7 +27,7 @@
 //! ```
 
 mod common;
-mod function;
+mod functions;
 
 /// Base module that contains the basic functions and structs.
 pub mod base;
