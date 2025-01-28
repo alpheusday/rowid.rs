@@ -1,3 +1,9 @@
+## 0.4.1 (2025-01-28)
+
+### What's Changed
+
+- Upgrade `rand` dependency from version `~0.8.5` to `~0.9.0`
+
 ## 0.4.0 (2024-10-27)
 
 ### What's Changed
