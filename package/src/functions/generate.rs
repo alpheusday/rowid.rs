@@ -1,8 +1,8 @@
 use std::{io, time::SystemTime};
 
 use crate::functions::{
-    encode::{EncodeOptions, _encode},
-    get_randomness::{GetRandomnessOptions, _get_randomness},
+    encode::{_encode, EncodeOptions},
+    get_randomness::{_get_randomness, GetRandomnessOptions},
 };
 
 pub struct GenerateOptions<CharList: AsRef<str>> {

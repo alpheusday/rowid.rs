@@ -1,8 +1,8 @@
 use std::time::SystemTime;
 
 use crate::functions::{
-    encode::{encode_unsafe, EncodeOptions},
-    get_randomness::{GetRandomnessOptions, _get_randomness},
+    encode::{EncodeOptions, encode_unsafe},
+    get_randomness::{_get_randomness, GetRandomnessOptions},
 };
 
 pub struct RowIDOptions<CharList: AsRef<str>> {

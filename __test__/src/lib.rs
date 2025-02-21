@@ -4,8 +4,8 @@ mod tests {
 
     use rowid::{
         base::{
-            decode, encode, generate, get_randomness, rowid, verify,
-            GenerateResult, RowIDError, VerifyResult,
+            GenerateResult, RowIDError, VerifyResult, decode, encode, generate,
+            get_randomness, rowid, verify,
         },
         time::{system_time_to_timestamp, timestamp_to_system_time},
         with_config::{RowIDWithConfig, RowIDWithConfigResult},

@@ -6,12 +6,12 @@ use crate::{
         errors::RowIDError,
     },
     functions::{
-        decode::{DecodeOptions, _decode},
-        encode::{EncodeOptions, _encode},
-        generate::{GenerateOptions, GenerateResult, _generate},
-        get_randomness::{GetRandomnessOptions, _get_randomness},
-        rowid::{RowIDOptions, _rowid},
-        verify::{VerifyOptions, VerifyResult, _verify},
+        decode::{_decode, DecodeOptions},
+        encode::{_encode, EncodeOptions},
+        generate::{_generate, GenerateOptions, GenerateResult},
+        get_randomness::{_get_randomness, GetRandomnessOptions},
+        rowid::{_rowid, RowIDOptions},
+        verify::{_verify, VerifyOptions, VerifyResult},
     },
 };
 

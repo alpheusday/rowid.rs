@@ -1,6 +1,6 @@
 use std::{io, time::SystemTime};
 
-use crate::functions::decode::{DecodeOptions, _decode};
+use crate::functions::decode::{_decode, DecodeOptions};
 
 pub struct VerifyOptions<CharList: AsRef<str>, Encoded: AsRef<str>>
 where

@@ -3,12 +3,12 @@ use std::{io, time::SystemTime};
 use crate::{
     common::configs::{CHAR_LIST, RANDOMNESS_LENGTH},
     functions::{
-        decode::{DecodeOptions, _decode},
-        encode::{EncodeOptions, _encode},
-        generate::{GenerateOptions, _generate},
-        get_randomness::{GetRandomnessOptions, _get_randomness},
-        rowid::{RowIDOptions, _rowid},
-        verify::{VerifyOptions, _verify},
+        decode::{_decode, DecodeOptions},
+        encode::{_encode, EncodeOptions},
+        generate::{_generate, GenerateOptions},
+        get_randomness::{_get_randomness, GetRandomnessOptions},
+        rowid::{_rowid, RowIDOptions},
+        verify::{_verify, VerifyOptions},
     },
 };
 

@@ -1,4 +1,4 @@
-use rand::{rngs::ThreadRng, Rng};
+use rand::{Rng, rngs::ThreadRng};
 
 pub struct GetRandomnessOptions<CharList: AsRef<str>> {
     pub char_list: CharList,
