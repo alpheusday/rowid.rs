@@ -1,3 +1,10 @@
+## 0.4.2 (2025-04-10)
+
+### What's Changed
+
+- Avoid `decode` function to uppercase the input and lead to different result
+- Update to 2024 edition
+
 ## 0.4.1 (2025-01-28)
 
 ### What's Changed

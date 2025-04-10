@@ -30,8 +30,7 @@ pub fn _decode<CharList: AsRef<str>, Encoded: AsRef<str>>(
 
     let mut encoded_chars: [char; TIMESTAMP_LENGTH] = ['\0'; TIMESTAMP_LENGTH];
 
-    for (i, c) in encoded[..TIMESTAMP_LENGTH].to_uppercase().chars().enumerate()
-    {
+    for (i, c) in encoded[..TIMESTAMP_LENGTH].chars().enumerate() {
         encoded_chars[i] = c;
     }
 
