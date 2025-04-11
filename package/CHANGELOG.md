@@ -1,4 +1,8 @@
-## 0.4.2 (2025-04-10)
+## 0.5.0 (2025-04-11)
+
+A rename from `0.4.2` as it requires Rust `>=1.85.0`
+
+## 0.4.2 (2025-04-10) (yanked)
 
 ### What's Changed
 
