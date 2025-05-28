@@ -8,8 +8,8 @@ description = """
 A time-based unique ID solution
 """
 readme = "README.md"
-homepage = "https://github.com/alpheustangs/rowid.rs"
-repository = "https://github.com/alpheustangs/rowid.rs"
+homepage = "https://github.com/alpheus-day/rowid.rs"
+repository = "https://github.com/alpheus-day/rowid.rs"
 license = "MIT"
 keywords = [
     "rowid",
