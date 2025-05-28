@@ -1,3 +1,9 @@
+## 0.5.1 (2025-05-28)
+
+### What's Changed
+
+- Update `Cargo.toml`
+
 ## 0.5.0 (2025-04-11)
 
 A rename from `0.4.2` as it requires Rust `>=1.85.0`
