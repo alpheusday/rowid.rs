@@ -1,4 +1,4 @@
-use std::{io, time::SystemTime};
+use std::io;
 
 use crate::{
     common::configs::{CHAR_LIST, RANDOMNESS_LENGTH},
@@ -41,15 +41,17 @@ pub fn rowid() -> String {
 ///
 /// ```no_run
 /// use std::time::SystemTime;
-/// use rowid::base::encode;
+/// use rowid::{
+///     base::encode,
+///     time::system_time_to_timestamp,
+/// };
 ///
-/// let encoded: String = encode(SystemTime::now()).unwrap();
+/// let now: usize = system_time_to_timestamp(SystemTime::now());
+///
+/// let encoded: String = encode(now).unwrap();
 /// ```
-pub fn encode<T: Into<SystemTime>>(system_time: T) -> io::Result<String> {
-    _encode(EncodeOptions {
-        char_list: CHAR_LIST,
-        system_time: system_time.into(),
-    })
+pub fn encode(timestamp: usize) -> io::Result<String> {
+    _encode(EncodeOptions { char_list: CHAR_LIST, timestamp })
 }
 
 /// This function decodes the ID into a timestamp in milliseconds.
@@ -57,12 +59,11 @@ pub fn encode<T: Into<SystemTime>>(system_time: T) -> io::Result<String> {
 /// ## Example
 ///
 /// ```no_run
-/// use std::time::SystemTime;
 /// use rowid::base::decode;
 ///
-/// let decoded: SystemTime = decode("ABC123").unwrap();
+/// let decoded: usize = decode("ABC123").unwrap();
 /// ```
-pub fn decode<S: AsRef<str>>(encoded: S) -> io::Result<SystemTime> {
+pub fn decode<S: AsRef<str>>(encoded: S) -> io::Result<usize> {
     _decode(DecodeOptions { char_list: CHAR_LIST, encoded: encoded.as_ref() })
 }
 
@@ -72,18 +73,22 @@ pub fn decode<S: AsRef<str>>(encoded: S) -> io::Result<SystemTime> {
 ///
 /// ```no_run
 /// use std::time::SystemTime;
-/// use rowid::base::{generate, GenerateResult};
+/// use rowid::{
+///     base::{generate, GenerateResult},
+///     time::system_time_to_timestamp,
+/// };
 ///
-/// let now: SystemTime = SystemTime::now();
+/// let now: usize = system_time_to_timestamp(SystemTime::now());
+///
 /// let result: GenerateResult = generate(now, Some(22));
 /// ```
-pub fn generate<T: Into<SystemTime>>(
-    system_time: T,
+pub fn generate(
+    timestamp: usize,
     randomness_length: Option<usize>,
 ) -> GenerateResult {
     _generate(GenerateOptions {
         char_list: CHAR_LIST,
-        system_time: system_time.into(),
+        timestamp,
         randomness_length: match randomness_length {
             | Some(l) => l,
             | None => RANDOMNESS_LENGTH,

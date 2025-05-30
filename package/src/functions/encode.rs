@@ -1,25 +1,22 @@
-use std::{
-    io,
-    time::{SystemTime, UNIX_EPOCH},
-};
+use std::{io, time::UNIX_EPOCH};
 
 use crate::{
     common::{configs::TIMESTAMP_LENGTH, errors::RowIDError},
-    time::system_time_to_timestamp,
+    time::timestamp_to_system_time,
 };
 
 pub struct EncodeOptions<CharList: AsRef<str>> {
     pub char_list: CharList,
-    pub system_time: SystemTime,
+    pub timestamp: usize,
 }
 
-fn _encode_<CharList: AsRef<str>>(opts: EncodeOptions<CharList>) -> String {
+fn __encode<CharList: AsRef<str>>(opts: EncodeOptions<CharList>) -> String {
     let char_list: Vec<char> = opts.char_list.as_ref().chars().collect();
     let char_list_length: usize = char_list.len();
 
     let mut index: usize = TIMESTAMP_LENGTH;
     let mut encoded: [char; TIMESTAMP_LENGTH] = ['\0'; TIMESTAMP_LENGTH];
-    let mut remaining: usize = system_time_to_timestamp(opts.system_time);
+    let mut remaining: usize = opts.timestamp;
 
     while index > 0 {
         index -= 1;
@@ -33,18 +30,18 @@ fn _encode_<CharList: AsRef<str>>(opts: EncodeOptions<CharList>) -> String {
 pub fn encode_unsafe<CharList: AsRef<str>>(
     opts: EncodeOptions<CharList>
 ) -> String {
-    _encode_(opts)
+    __encode(opts)
 }
 
 pub fn _encode<CharList: AsRef<str>>(
     opts: EncodeOptions<CharList>
 ) -> io::Result<String> {
-    if opts.system_time < UNIX_EPOCH {
+    if timestamp_to_system_time(opts.timestamp) < UNIX_EPOCH {
         return Err(io::Error::new(
             io::ErrorKind::InvalidInput,
             RowIDError::InvalidEncoded.as_str(),
         ));
     }
 
-    Ok(_encode_(opts))
+    Ok(__encode(opts))
 }

@@ -1,6 +1,9 @@
 use std::{io, time::SystemTime};
 
-use crate::functions::decode::{_decode, DecodeOptions};
+use crate::{
+    functions::decode::{_decode, DecodeOptions},
+    time::timestamp_to_system_time,
+};
 
 pub struct VerifyOptions<CharList: AsRef<str>, Encoded: AsRef<str>>
 where
@@ -15,8 +18,8 @@ where
 pub struct VerifyResult {
     /// Tells whether the verification is success or not.
     pub success: bool,
-    /// Decoded system time based on the ID.
-    pub result: Option<SystemTime>,
+    /// Decoded timestamp based on the ID.
+    pub result: Option<usize>,
     /// Tells whether the ID is natural or not.
     pub natural: Option<bool>,
     /// Error when the verification is failed.
@@ -26,7 +29,7 @@ pub struct VerifyResult {
 pub fn _verify<CharList: AsRef<str>, Encoded: AsRef<str>>(
     opts: VerifyOptions<CharList, Encoded>
 ) -> VerifyResult {
-    let result: SystemTime = match _decode(DecodeOptions {
+    let result: usize = match _decode(DecodeOptions {
         char_list: opts.char_list,
         encoded: opts.encoded,
     }) {
@@ -44,7 +47,7 @@ pub fn _verify<CharList: AsRef<str>, Encoded: AsRef<str>>(
     VerifyResult {
         success: true,
         result: Some(result),
-        natural: Some(result < SystemTime::now()),
+        natural: Some(timestamp_to_system_time(result) < SystemTime::now()),
         error: None,
     }
 }

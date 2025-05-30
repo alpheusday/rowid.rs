@@ -1,3 +1,12 @@
+## 0.6.0
+
+### Breaking Changes
+
+- `encode` function require `timestamp` in `usize` instead of `SystemTime`
+- `decode` function return `timestamp` in `usize` instead of `SystemTime`
+- `generate` function require `timestamp` in `usize` instead of `SystemTime`
+- `verify` function return `result` in `usize` instead of `SystemTime`
+
 ## 0.5.1 (2025-05-28)
 
 ### What's Changed

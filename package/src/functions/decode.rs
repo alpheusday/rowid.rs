@@ -1,9 +1,6 @@
-use std::{collections::HashMap, io, time::SystemTime};
+use std::{collections::HashMap, io};
 
-use crate::{
-    common::{configs::TIMESTAMP_LENGTH, errors::RowIDError},
-    time::timestamp_to_system_time,
-};
+use crate::common::{configs::TIMESTAMP_LENGTH, errors::RowIDError};
 
 pub struct DecodeOptions<CharList: AsRef<str>, Encoded: AsRef<str>> {
     pub char_list: CharList,
@@ -12,7 +9,7 @@ pub struct DecodeOptions<CharList: AsRef<str>, Encoded: AsRef<str>> {
 
 pub fn _decode<CharList: AsRef<str>, Encoded: AsRef<str>>(
     opts: DecodeOptions<CharList, Encoded>
-) -> io::Result<SystemTime> {
+) -> io::Result<usize> {
     let char_list: &str = opts.char_list.as_ref();
     let encoded: &str = opts.encoded.as_ref();
 
@@ -54,5 +51,5 @@ pub fn _decode<CharList: AsRef<str>, Encoded: AsRef<str>>(
         }
     }
 
-    Ok(timestamp_to_system_time(timestamp))
+    Ok(timestamp)
 }

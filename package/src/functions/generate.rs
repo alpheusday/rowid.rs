@@ -1,4 +1,4 @@
-use std::{io, time::SystemTime};
+use std::io;
 
 use crate::functions::{
     encode::{_encode, EncodeOptions},
@@ -7,7 +7,7 @@ use crate::functions::{
 
 pub struct GenerateOptions<CharList: AsRef<str>> {
     pub char_list: CharList,
-    pub system_time: SystemTime,
+    pub timestamp: usize,
     pub randomness_length: usize,
 }
 
@@ -27,19 +27,17 @@ pub fn _generate<CharList: AsRef<str>>(
 ) -> GenerateResult {
     let char_list: &str = opts.char_list.as_ref();
 
-    let encoded: String = match _encode(EncodeOptions {
-        char_list,
-        system_time: opts.system_time,
-    }) {
-        | Ok(res) => res,
-        | Err(e) => {
-            return GenerateResult {
-                success: false,
-                result: None,
-                error: Some(e),
-            };
-        },
-    };
+    let encoded: String =
+        match _encode(EncodeOptions { char_list, timestamp: opts.timestamp }) {
+            | Ok(res) => res,
+            | Err(e) => {
+                return GenerateResult {
+                    success: false,
+                    result: None,
+                    error: Some(e),
+                };
+            },
+        };
 
     let extra_randomness_length: String =
         _get_randomness(GetRandomnessOptions {
