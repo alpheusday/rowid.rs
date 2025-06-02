@@ -1,4 +1,4 @@
-use std::io;
+use std::{io, time::SystemTime};
 
 use crate::{
     common::{
@@ -52,7 +52,6 @@ impl RowIDWithConfigResult {
     ///
     /// let rwc: RowIDWithConfigResult =
     ///     RowIDWithConfig::new().done().unwrap();
-    ///
     /// let id: String = rwc.rowid();
     /// ```
     pub fn rowid(&self) -> String {
@@ -69,23 +68,20 @@ impl RowIDWithConfigResult {
     ///
     /// ```no_run
     /// use std::time::SystemTime;
-    /// use rowid::{
-    ///     with_config::{RowIDWithConfig, RowIDWithConfigResult},
-    ///     time::system_time_to_timestamp,
-    /// };
+    /// use rowid::with_config::{RowIDWithConfig, RowIDWithConfigResult};
     ///
     /// let rwc: RowIDWithConfigResult =
     ///     RowIDWithConfig::new().done().unwrap();
-    ///
-    /// let now: usize = system_time_to_timestamp(SystemTime::now());
-    ///
-    /// let encoded: String = rwc.encode(now).unwrap();
+    /// let encoded: String = rwc.encode(SystemTime::now()).unwrap();
     /// ```
-    pub fn encode(
+    pub fn encode<T: Into<SystemTime>>(
         &self,
-        timestamp: usize,
+        system_time: T,
     ) -> io::Result<String> {
-        _encode(EncodeOptions { char_list: &self.state.char_list, timestamp })
+        _encode(EncodeOptions {
+            char_list: &self.state.char_list,
+            system_time: system_time.into(),
+        })
     }
 
     /// This function decodes the ID into a timestamp in milliseconds.
@@ -98,13 +94,12 @@ impl RowIDWithConfigResult {
     ///
     /// let rwc: RowIDWithConfigResult =
     ///     RowIDWithConfig::new().done().unwrap();
-    ///
-    /// let decoded: usize = rwc.decode("ABC123").unwrap();
+    /// let decoded: SystemTime = rwc.decode("ABC123").unwrap();
     /// ```
     pub fn decode<S: AsRef<str>>(
         &self,
         encoded: S,
-    ) -> io::Result<usize> {
+    ) -> io::Result<SystemTime> {
         _decode(DecodeOptions {
             char_list: &self.state.char_list,
             encoded: encoded.as_ref(),
@@ -119,25 +114,22 @@ impl RowIDWithConfigResult {
     /// use std::time::SystemTime;
     /// use rowid::{
     ///     base::GenerateResult,
-    ///     with_config::{RowIDWithConfig, RowIDWithConfigResult},
-    ///     time::system_time_to_timestamp,
+    ///     with_config::{RowIDWithConfig, RowIDWithConfigResult}
     /// };
     ///
     /// let rwc: RowIDWithConfigResult =
     ///     RowIDWithConfig::new().done().unwrap();
-    ///
-    /// let now: usize = system_time_to_timestamp(SystemTime::now());
-    ///
+    /// let now: SystemTime = SystemTime::now();
     /// let result: GenerateResult = rwc.generate(now, Some(22));
     /// ```
-    pub fn generate(
+    pub fn generate<T: Into<SystemTime>>(
         &self,
-        timestamp: usize,
+        system_time: T,
         randomness_length: Option<usize>,
     ) -> GenerateResult {
         _generate(GenerateOptions {
             char_list: &self.state.char_list,
-            timestamp,
+            system_time: system_time.into(),
             randomness_length: match randomness_length {
                 | Some(l) => l,
                 | None => self.state.randomness_length,
@@ -157,7 +149,6 @@ impl RowIDWithConfigResult {
     ///
     /// let rwc: RowIDWithConfigResult =
     ///     RowIDWithConfig::new().done().unwrap();
-    ///
     /// let result: VerifyResult = rwc.verify("ABC123");
     /// ```
     pub fn verify<S: AsRef<str>>(
@@ -179,7 +170,6 @@ impl RowIDWithConfigResult {
     ///
     /// let rwc: RowIDWithConfigResult =
     ///     RowIDWithConfig::new().done().unwrap();
-    ///
     /// let randomness: String = rwc.get_randomness(10);
     /// ```
     pub fn get_randomness(
@@ -292,7 +282,6 @@ impl RowIDWithConfig {
     ///
     /// let rwc: RowIDWithConfigResult =
     ///     RowIDWithConfig::new().done().unwrap();
-    ///
     /// let id: String = rwc.rowid();
     /// ```
     pub fn done(self) -> io::Result<RowIDWithConfigResult> {

@@ -22,8 +22,7 @@ fn test_rowid_with_config_encode() {
     let rwc: RowIDWithConfigResult =
         RowIDWithConfig::new().randomness_length(6).done().unwrap();
 
-    let encoded: String =
-        rwc.encode(system_time_to_timestamp(SystemTime::now())).unwrap();
+    let encoded: String = rwc.encode(SystemTime::now()).unwrap();
 
     assert!(encoded.len() == 10);
 }
@@ -43,10 +42,13 @@ fn test_rowid_with_config_decode() {
     let rwc: RowIDWithConfigResult =
         RowIDWithConfig::new().randomness_length(6).done().unwrap();
 
-    let now: usize = system_time_to_timestamp(SystemTime::now());
-    let decoded: usize = rwc.decode(&rwc.encode(now).unwrap()).unwrap();
+    let current: SystemTime = SystemTime::now();
+    let decoded: SystemTime =
+        rwc.decode(&rwc.encode(current).unwrap()).unwrap();
 
-    assert!(decoded == now);
+    assert!(
+        system_time_to_timestamp(decoded) == system_time_to_timestamp(current)
+    );
 }
 
 #[test]
@@ -57,13 +59,13 @@ fn test_rowid_with_config_encode_decode() {
         .done()
         .unwrap();
 
-    let now: usize = system_time_to_timestamp(SystemTime::now());
+    let now: SystemTime = SystemTime::now();
 
     let encoded: String = rwc.encode(now).unwrap();
 
-    let decoded: usize = rwc.decode(encoded).unwrap();
+    let decoded: SystemTime = rwc.decode(encoded).unwrap();
 
-    assert!(decoded == now);
+    assert!(system_time_to_timestamp(decoded) == system_time_to_timestamp(now));
 }
 
 #[test]
@@ -71,13 +73,16 @@ fn test_rowid_with_config_generate() {
     let rwc: RowIDWithConfigResult =
         RowIDWithConfig::new().randomness_length(6).done().unwrap();
 
-    let now: usize = system_time_to_timestamp(SystemTime::now());
-    let generated: GenerateResult = rwc.generate(now, None);
+    let current: SystemTime = SystemTime::now();
+    let generated: GenerateResult = rwc.generate(current, None);
     let id: String = generated.result.unwrap();
 
     assert!(generated.success == true);
     assert!(id.len() == 16);
-    assert!(rwc.decode(&id).unwrap() == now);
+    assert!(
+        system_time_to_timestamp(rwc.decode(&id).unwrap())
+            == system_time_to_timestamp(current)
+    );
 }
 
 #[test]
@@ -85,13 +90,14 @@ fn test_rowid_with_config_verify() {
     let rwc: RowIDWithConfigResult =
         RowIDWithConfig::new().randomness_length(6).done().unwrap();
 
-    let now: usize = system_time_to_timestamp(SystemTime::now());
-    let generated: GenerateResult = rwc.generate(now, None);
+    let current: SystemTime = SystemTime::now();
+    let generated: GenerateResult = rwc.generate(current, None);
     let verified: VerifyResult = rwc.verify(&generated.result.unwrap());
 
     assert!(verified.success == true);
     assert!(match verified.result {
-        | Some(r) => r == now,
+        | Some(r) =>
+            system_time_to_timestamp(r) == system_time_to_timestamp(current),
         | None => false,
     });
     assert!(verified.natural == Some(true));

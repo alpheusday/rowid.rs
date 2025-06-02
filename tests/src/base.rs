@@ -5,7 +5,7 @@ use rowid::{
         GenerateResult, RowIDError, VerifyResult, decode, encode, generate,
         get_randomness, rowid, verify,
     },
-    time::system_time_to_timestamp,
+    time::{system_time_to_timestamp, timestamp_to_system_time},
 };
 
 // get_randomness
@@ -38,14 +38,13 @@ fn test_get_randomness_20() {
 
 #[test]
 fn test_encode_now() {
-    let encoded: String =
-        encode(system_time_to_timestamp(SystemTime::now())).unwrap();
+    let encoded: String = encode(SystemTime::now()).unwrap();
     assert!(encoded.len() == 10);
 }
 
 #[test]
 fn test_encode_0() {
-    let encoded: String = encode(0).unwrap();
+    let encoded: String = encode(timestamp_to_system_time(0)).unwrap();
     assert!(encoded == "0000000000");
 }
 
@@ -61,9 +60,11 @@ fn test_rowid() {
 
 #[test]
 fn test_decode() {
-    let now: usize = system_time_to_timestamp(SystemTime::now());
-    let decoded: usize = decode(&encode(now).unwrap()).unwrap();
-    assert!(decoded == now);
+    let current: SystemTime = SystemTime::now();
+    let decoded: SystemTime = decode(&encode(current).unwrap()).unwrap();
+    assert!(
+        system_time_to_timestamp(decoded) == system_time_to_timestamp(current)
+    );
 }
 
 #[test]
@@ -92,11 +93,14 @@ fn test_decode_invalid_input_error() {
 
 #[test]
 fn test_generate() {
-    let now: usize = system_time_to_timestamp(SystemTime::now());
-    let generated: GenerateResult = generate(now, Some(6));
+    let current: SystemTime = SystemTime::now();
+    let generated: GenerateResult = generate(current, Some(6));
     let id: String = generated.result.unwrap();
     assert!(generated.success == true);
-    assert!(decode(&id).unwrap() == now);
+    assert!(
+        system_time_to_timestamp(decode(&id).unwrap())
+            == system_time_to_timestamp(current)
+    );
     assert!(id.len() == 16);
 }
 
@@ -104,12 +108,13 @@ fn test_generate() {
 
 #[test]
 fn test_verify() {
-    let now: usize = system_time_to_timestamp(SystemTime::now());
-    let id: String = generate(now, Some(6)).result.unwrap();
+    let current: SystemTime = SystemTime::now();
+    let id: String = generate(current, Some(6)).result.unwrap();
     let verified: VerifyResult = verify(&id);
     assert!(verified.success == true);
     assert!(match verified.result {
-        | Some(r) => r == now,
+        | Some(r) =>
+            system_time_to_timestamp(r) == system_time_to_timestamp(current),
         | None => false,
     });
     assert!(verified.natural == Some(true));
